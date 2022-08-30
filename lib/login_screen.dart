@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:sample_project_2/register_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -9,8 +10,15 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  var usernameController = TextEditingController();
-  var passwordController = TextEditingController();
+  final _usernameController = TextEditingController();
+  final _passwordController = TextEditingController();
+  var _isPasswordVisible = false;
+
+  void _togglePasswordVisibility() {
+    setState(() {
+      _isPasswordVisible = !_isPasswordVisible;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,10 +50,27 @@ class _LoginScreenState extends State<LoginScreen> {
                       Spacer()
                     ],
                   ),
+                  const SizedBox(height: 8,),
                   TextFormField(
-                    controller: usernameController,
-                    decoration: const InputDecoration(
-                        hintText: "Enter Username"
+                    controller: _usernameController,
+                    decoration: InputDecoration(
+                      hintText: "Enter Username",
+                      fillColor: Colors.white,
+                      filled: true,
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: const BorderSide(
+                          width: 1,
+                          color: Color.fromRGBO(211, 211, 211, 1)
+                        )
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: const BorderSide(
+                          width: 1,
+                          color: Color.fromRGBO(211, 211, 211, 1)
+                        )
+                      )
                     ),
                   ),
                   const SizedBox(height: 16,),
@@ -55,10 +80,34 @@ class _LoginScreenState extends State<LoginScreen> {
                       Spacer()
                     ],
                   ),
+                  const SizedBox(height: 8,),
                   TextFormField(
-                    controller: passwordController,
-                    decoration: const InputDecoration(
-                        hintText: "Enter Password"
+                    controller: _passwordController,
+                    obscureText: !_isPasswordVisible,
+                    decoration: InputDecoration(
+                      hintText: "Enter Password",
+                      fillColor: Colors.white,
+                      filled: true,
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: const BorderSide(
+                          width: 1,
+                          color: Color.fromRGBO(211, 211, 211, 1)
+                        )
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: const BorderSide(
+                          width: 1,
+                          color: Color.fromRGBO(211, 211, 211, 1)
+                        )
+                      ),
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                            _isPasswordVisible ? Icons.visibility : Icons.visibility_off
+                        ),
+                        onPressed: _togglePasswordVisibility,
+                      )
                     ),
                   ),
                   const SizedBox(height: 16,),
@@ -87,7 +136,12 @@ class _LoginScreenState extends State<LoginScreen> {
               height: 48,
               width: MediaQuery.of(context).size.width,
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  var username = _usernameController.text.toString();
+                  var password = _passwordController.text.toString();
+                  print("username: $username");
+                  print("password: $password");
+                },
                 style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all<Color>(Colors.red),
                   shape: MaterialStateProperty.all<RoundedRectangleBorder>(
@@ -110,7 +164,14 @@ class _LoginScreenState extends State<LoginScreen> {
               height: 48,
               width: MediaQuery.of(context).size.width,
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) {
+                      return const RegisterScreen();
+                    })
+                  );
+                },
                 style: ButtonStyle(
                   foregroundColor: MaterialStateProperty.all<Color>(Colors.red),
                   backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
@@ -156,38 +217,58 @@ class _LoginScreenState extends State<LoginScreen> {
             const Spacer(),
             Row(
               children: [
-                ElevatedButton(
-                  onPressed: () {},
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all<Color>(Colors.white70)
-                  ),
-                  child: Row(
-                    children: [
-                      SvgPicture.asset("svg/icon/ico_feedback.svg"),
-                      const SizedBox(width: 4,),
-                      const Text(
-                        "Feedback",
-                        style: TextStyle(color: Colors.red),
+                Expanded(
+                  child: ElevatedButton.icon(
+                    onPressed: () {
+                      print("feedback");
+                    },
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all<Color>(Colors.white54),
+                      shape: MaterialStateProperty.all<OutlinedBorder>(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8)
+                        )
+                      ),
+                      fixedSize: MaterialStateProperty.all<Size>(
+                        const Size(0, 34)
                       )
-                    ],
+                    ),
+                    icon: SvgPicture.asset("svg/icon/ico_feedback.svg"),
+                    label: const Text(
+                      "Feedback",
+                      style: TextStyle(
+                        color: Colors.red,
+                        fontWeight: FontWeight.bold
+                      ),
+                    )
                   )
                 ),
                 const SizedBox(width: 8,),
-                ElevatedButton(
-                    onPressed: () {},
+                Expanded(
+                  child: ElevatedButton.icon(
+                    onPressed: () {
+                      print("share");
+                    },
                     style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all<Color>(Colors.white70)
-                    ),
-                    child: Row(
-                      children: [
-                        SvgPicture.asset("svg/icon/ico_share.svg"),
-                        const SizedBox(width: 4,),
-                        const Text(
-                          "Share",
-                          style: TextStyle(color: Colors.red),
+                      backgroundColor: MaterialStateProperty.all<Color>(Colors.white54),
+                      shape: MaterialStateProperty.all<OutlinedBorder>(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8)
                         )
-                      ],
+                      ),
+                      fixedSize: MaterialStateProperty.all<Size>(
+                        const Size(0, 32)
+                      )
+                    ),
+                    icon: SvgPicture.asset("svg/icon/ico_share.svg"),
+                    label: const Text(
+                      "Share",
+                      style: TextStyle(
+                        color: Colors.red,
+                        fontWeight: FontWeight.bold
+                      ),
                     )
+                  )
                 )
               ],
             ),
